@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% block title %}
+    Оформление заказа - Skillbox Market
+{% endblock %}
+{% block body %}
+    <section>
+        <div class="container py-5 px-4 px-lg-5">
+            <div class="row g-5">
+                <div class="col-lg-5 order-md-last">
+                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-dark">Корзина</span>
+                        <span class="badge bg-dark rounded-pill">{{ cart|length }}</span>
+                    </h4>
+                    <ul class="list-group mb-3">
+                        {% for product_item in cart %}
+                            <li class="list-group-item d-flex justify-content-between lh-sm">
+                                <div>
+                                    <h6 class="my-0">
+                                        {{ product_item.title }}
+                                        <span class="badge text-bg-secondary mx-1">{{ product_item.quantity }}</span>
+                                    </h6>
+                                    <small class="text-body-secondary">
+                                        {{ product_item.description|slice:":65" }}
+                                    </small>
+                                </div>
+                                <div class="text-center">
+                                    {% if product_item.price_with_discount is not None and cart.get_cart_price_with_discount is None %}
+                                        <span class="text-muted text-decoration-line-through">
+                                            {{ product_item.total_item_price|floatformat:"0" }} ₽
+                                        </span>
+                                        <br>
+                                        <span class="text-body-secondary">
+                                            {{ product_item.total_item_discount_price }} ₽
+                                        </span>
+                                    {% else %}
+                                        <span class="text-body-secondary">
+                                            {{ product_item.total_item_price|floatformat:"0" }} ₽
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </li>
+                        {% endfor %}
+                        {% if cart.get_cart_price_with_discount %}
+                            <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
+                                <div class="text-success">
+                                    <h6 class="my-0">Скидка</h6>
+                                </div>
+                                <span class="text-success">
+                                        -{{ cart.get_difference_original_price_and_discount_price|floatformat:"0" }} ₽
+                                    </span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Итого</span>
+                                <strong>{{ cart.get_cart_price_with_discount|floatformat:"0" }} ₽</strong>
+                            </li>
+                        {% else %}
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Итого</span>
+                                <strong>{{ cart.get_total_price|floatformat:"0" }} ₽</strong>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="col-lg-7">
+                    <h4 class="mb-3">Адрес доставки</h4>
+                    <form action="{% url 'orders:checkout' %}" method="post">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <label for="firstName" class="form-label">Имя</label>
+                                {{ form.first_name }}
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="lastName" class="form-label">Фамилия</label>
+                                {{ form.last_name }}
+                            </div>
+
+                            <div class="col-12">
+                                <label for="email" class="form-label">Адрес эл. почты</label>
+                                {{ form.email }}
+                            </div>
+
+                            <div class="col-12">
+                                <label for="phone" class="form-label">Телефон</label>
+                                {{ form.phone_number }}
+                            </div>
+
+                            <div class="col-12">
+                                <label for="address" class="form-label">Адрес</label>
+                                {{ form.address }}
+                            </div>
+
+                            <div class="col-md-7">
+                                <label for="city" class="form-label">Город</label>
+                                {{ form.city }}
+                            </div>
+
+                            <div class="col-md-5">
+                                <label for="zip" class="form-label">Почтовый индекс</label>
+                                {{ form.post_code }}
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="form-check">
+                            {{ form.same_address }}
+                            <label class="form-check-label" for="same-address">
+                                Адрес доставки совпадает с моим платежным адресом
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            {{ form.save_info }}
+                            <label class="form-check-label" for="save-info">
+                                Сохранить эту информацию для следующего раза
+                            </label>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <h4 class="mb-3">Способ оплаты</h4>
+
+                        <div class="my-3">
+                            <div class="form-check">
+                                {{ form.payment_method.0 }}
+                            </div>
+                            <div class="form-check">
+                                {{ form.payment_method.1 }}
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <button class="w-100 btn btn-dark btn-lg" type="submit">Продолжить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer-->
+    <footer class="py-5 bg-dark">
+        <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Skillbox Market 2023</p></div>
+    </footer>
+{% endblock %}

@@ -1,0 +1,553 @@
+[
+  {
+    "model": "products.productitem",
+    "pk": 2,
+    "fields": {
+      "product": 14,
+      "seller": 2,
+      "price": "95999.00",
+      "quantity": 20,
+      "created_at": "2023-11-28T13:25:10.896Z",
+      "updated_at": "2023-11-28T13:25:10.896Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 3,
+    "fields": {
+      "product": 14,
+      "seller": 3,
+      "price": "99000.00",
+      "quantity": 15,
+      "created_at": "2023-11-28T13:25:10.898Z",
+      "updated_at": "2023-11-28T13:25:10.898Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 4,
+    "fields": {
+      "product": 24,
+      "seller": 4,
+      "price": "1136.00",
+      "quantity": 2,
+      "created_at": "2023-11-28T13:26:45.135Z",
+      "updated_at": "2023-11-28T13:26:45.135Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 5,
+    "fields": {
+      "product": 24,
+      "seller": 3,
+      "price": "1661.00",
+      "quantity": 10,
+      "created_at": "2023-11-28T13:26:45.138Z",
+      "updated_at": "2023-11-28T13:26:45.138Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 6,
+    "fields": {
+      "product": 24,
+      "seller": 5,
+      "price": "2031.00",
+      "quantity": 50,
+      "created_at": "2023-11-28T13:26:45.139Z",
+      "updated_at": "2023-11-28T13:26:45.139Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 7,
+    "fields": {
+      "product": 26,
+      "seller": 2,
+      "price": "3993.00",
+      "quantity": 50,
+      "created_at": "2023-11-28T13:27:34.725Z",
+      "updated_at": "2023-11-28T13:27:34.725Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 8,
+    "fields": {
+      "product": 25,
+      "seller": 2,
+      "price": "3993.00",
+      "quantity": 15,
+      "created_at": "2023-11-28T13:28:28.077Z",
+      "updated_at": "2023-11-28T13:28:28.077Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 9,
+    "fields": {
+      "product": 25,
+      "seller": 3,
+      "price": "4000.00",
+      "quantity": 34,
+      "created_at": "2023-11-28T13:28:28.079Z",
+      "updated_at": "2023-11-28T13:28:28.079Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 10,
+    "fields": {
+      "product": 4,
+      "seller": 4,
+      "price": "10193.00",
+      "quantity": 43,
+      "created_at": "2023-11-28T13:29:00.812Z",
+      "updated_at": "2023-11-28T13:29:00.812Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 11,
+    "fields": {
+      "product": 5,
+      "seller": 2,
+      "price": "11989.00",
+      "quantity": 12,
+      "created_at": "2023-11-28T13:29:41.260Z",
+      "updated_at": "2023-11-28T13:29:41.260Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 12,
+    "fields": {
+      "product": 5,
+      "seller": 3,
+      "price": "13456.00",
+      "quantity": 10,
+      "created_at": "2023-11-28T13:29:41.262Z",
+      "updated_at": "2023-11-28T13:29:41.262Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 13,
+    "fields": {
+      "product": 5,
+      "seller": 5,
+      "price": "9099.00",
+      "quantity": 56,
+      "created_at": "2023-11-28T13:29:41.262Z",
+      "updated_at": "2023-11-28T13:29:41.263Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 14,
+    "fields": {
+      "product": 6,
+      "seller": 2,
+      "price": "14885.00",
+      "quantity": 20,
+      "created_at": "2023-11-28T13:30:19.195Z",
+      "updated_at": "2023-11-28T13:30:19.195Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 15,
+    "fields": {
+      "product": 6,
+      "seller": 3,
+      "price": "13456.00",
+      "quantity": 21,
+      "created_at": "2023-11-28T13:30:19.197Z",
+      "updated_at": "2023-11-28T13:30:19.197Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 16,
+    "fields": {
+      "product": 6,
+      "seller": 5,
+      "price": "17456.00",
+      "quantity": 20,
+      "created_at": "2023-11-28T13:30:19.198Z",
+      "updated_at": "2023-11-28T13:30:19.198Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 17,
+    "fields": {
+      "product": 22,
+      "seller": 2,
+      "price": "920.99",
+      "quantity": 10,
+      "created_at": "2023-11-28T13:30:56.399Z",
+      "updated_at": "2023-11-28T13:30:56.399Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 18,
+    "fields": {
+      "product": 22,
+      "seller": 3,
+      "price": "560.78",
+      "quantity": 1,
+      "created_at": "2023-11-28T13:30:56.403Z",
+      "updated_at": "2023-11-28T13:30:56.403Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 19,
+    "fields": {
+      "product": 7,
+      "seller": 2,
+      "price": "39999.99",
+      "quantity": 5,
+      "created_at": "2023-11-28T13:31:27.157Z",
+      "updated_at": "2023-11-28T13:31:27.157Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 20,
+    "fields": {
+      "product": 8,
+      "seller": 2,
+      "price": "21190.00",
+      "quantity": 13,
+      "created_at": "2023-11-28T13:32:12.583Z",
+      "updated_at": "2023-11-28T13:32:12.583Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 21,
+    "fields": {
+      "product": 8,
+      "seller": 4,
+      "price": "23456.00",
+      "quantity": 10,
+      "created_at": "2023-11-28T13:32:12.585Z",
+      "updated_at": "2023-11-28T13:32:12.585Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 22,
+    "fields": {
+      "product": 8,
+      "seller": 3,
+      "price": "19990.00",
+      "quantity": 50,
+      "created_at": "2023-11-28T13:32:12.587Z",
+      "updated_at": "2023-11-28T13:32:12.587Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 23,
+    "fields": {
+      "product": 8,
+      "seller": 5,
+      "price": "20000.00",
+      "quantity": 23,
+      "created_at": "2023-11-28T13:32:12.587Z",
+      "updated_at": "2023-11-28T13:32:12.587Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 24,
+    "fields": {
+      "product": 2,
+      "seller": 2,
+      "price": "34990.00",
+      "quantity": 10,
+      "created_at": "2023-11-28T13:32:32.264Z",
+      "updated_at": "2023-11-28T13:32:32.264Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 25,
+    "fields": {
+      "product": 17,
+      "seller": 2,
+      "price": "12600.00",
+      "quantity": 40,
+      "created_at": "2023-11-28T13:32:57.673Z",
+      "updated_at": "2023-11-28T13:32:57.673Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 26,
+    "fields": {
+      "product": 17,
+      "seller": 3,
+      "price": "10900.00",
+      "quantity": 13,
+      "created_at": "2023-11-28T13:32:57.675Z",
+      "updated_at": "2023-11-28T13:32:57.675Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 27,
+    "fields": {
+      "product": 16,
+      "seller": 2,
+      "price": "3599.00",
+      "quantity": 10,
+      "created_at": "2023-11-28T13:33:24.770Z",
+      "updated_at": "2023-11-28T13:33:24.770Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 28,
+    "fields": {
+      "product": 16,
+      "seller": 3,
+      "price": "4000.00",
+      "quantity": 15,
+      "created_at": "2023-11-28T13:33:24.773Z",
+      "updated_at": "2023-11-28T13:33:24.773Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 29,
+    "fields": {
+      "product": 15,
+      "seller": 2,
+      "price": "3599.99",
+      "quantity": 10,
+      "created_at": "2023-11-28T13:33:57.140Z",
+      "updated_at": "2023-11-28T13:33:57.140Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 30,
+    "fields": {
+      "product": 15,
+      "seller": 5,
+      "price": "3900.99",
+      "quantity": 10,
+      "created_at": "2023-11-28T13:33:57.143Z",
+      "updated_at": "2023-11-28T13:33:57.143Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 31,
+    "fields": {
+      "product": 19,
+      "seller": 2,
+      "price": "2564.00",
+      "quantity": 1,
+      "created_at": "2023-11-28T13:34:21.383Z",
+      "updated_at": "2023-11-28T13:34:21.383Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 32,
+    "fields": {
+      "product": 19,
+      "seller": 4,
+      "price": "2600.00",
+      "quantity": 10,
+      "created_at": "2023-11-28T13:34:21.384Z",
+      "updated_at": "2023-11-28T13:34:21.384Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 33,
+    "fields": {
+      "product": 11,
+      "seller": 2,
+      "price": "22468.00",
+      "quantity": 10,
+      "created_at": "2023-11-28T13:34:36.578Z",
+      "updated_at": "2023-11-28T13:34:36.578Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 34,
+    "fields": {
+      "product": 10,
+      "seller": 4,
+      "price": "29690.00",
+      "quantity": 10,
+      "created_at": "2023-11-28T13:34:51.550Z",
+      "updated_at": "2023-11-28T13:34:51.550Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 35,
+    "fields": {
+      "product": 13,
+      "seller": 2,
+      "price": "120000.00",
+      "quantity": 1,
+      "created_at": "2023-11-28T13:35:22.658Z",
+      "updated_at": "2023-11-28T13:35:22.658Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 36,
+    "fields": {
+      "product": 13,
+      "seller": 3,
+      "price": "109000.00",
+      "quantity": 20,
+      "created_at": "2023-11-28T13:35:22.659Z",
+      "updated_at": "2023-11-28T13:35:22.659Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 37,
+    "fields": {
+      "product": 13,
+      "seller": 5,
+      "price": "110000.00",
+      "quantity": 50,
+      "created_at": "2023-11-28T13:35:22.659Z",
+      "updated_at": "2023-11-28T13:35:22.659Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 38,
+    "fields": {
+      "product": 9,
+      "seller": 2,
+      "price": "17490.00",
+      "quantity": 20,
+      "created_at": "2023-11-28T13:35:50.744Z",
+      "updated_at": "2023-11-28T13:35:50.744Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 39,
+    "fields": {
+      "product": 9,
+      "seller": 5,
+      "price": "15990.00",
+      "quantity": 13,
+      "created_at": "2023-11-28T13:35:50.746Z",
+      "updated_at": "2023-11-28T13:35:50.746Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 40,
+    "fields": {
+      "product": 20,
+      "seller": 2,
+      "price": "5085.00",
+      "quantity": 10,
+      "created_at": "2023-11-28T13:36:13.591Z",
+      "updated_at": "2023-11-28T13:36:13.591Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 41,
+    "fields": {
+      "product": 20,
+      "seller": 4,
+      "price": "6000.00",
+      "quantity": 12,
+      "created_at": "2023-11-28T13:36:13.593Z",
+      "updated_at": "2023-11-28T13:36:13.593Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 42,
+    "fields": {
+      "product": 18,
+      "seller": 2,
+      "price": "5543.00",
+      "quantity": 10,
+      "created_at": "2023-11-28T13:36:31.417Z",
+      "updated_at": "2023-11-28T13:36:31.417Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 43,
+    "fields": {
+      "product": 21,
+      "seller": 2,
+      "price": "2632.00",
+      "quantity": 10,
+      "created_at": "2023-11-28T13:36:52.822Z",
+      "updated_at": "2023-11-28T13:36:52.822Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 44,
+    "fields": {
+      "product": 21,
+      "seller": 3,
+      "price": "2341.00",
+      "quantity": 10,
+      "created_at": "2023-11-28T13:36:52.823Z",
+      "updated_at": "2023-11-28T13:36:52.823Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 45,
+    "fields": {
+      "product": 23,
+      "seller": 5,
+      "price": "494.99",
+      "quantity": 1,
+      "created_at": "2023-11-28T13:37:12.248Z",
+      "updated_at": "2023-11-28T13:37:12.248Z"
+    }
+  },
+  {
+    "model": "products.productitem",
+    "pk": 46,
+    "fields": {
+      "product": 3,
+      "seller": 4,
+      "price": "17900.00",
+      "quantity": 40,
+      "created_at": "2023-11-28T13:37:31.208Z",
+      "updated_at": "2023-11-28T13:37:31.208Z"
+    }
+  },  {
+    "model": "products.productitem",
+    "pk": 47,
+    "fields": {
+      "product": 27,
+      "seller": 4,
+      "price": "2",
+      "quantity": 0,
+      "created_at": "2023-11-28T13:37:31.208Z",
+      "updated_at": "2023-11-28T13:37:31.208Z"
+    }
+  }
+]

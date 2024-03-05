@@ -1,0 +1,502 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Skillbox Market
+{% endblock %}
+
+{% block navigation %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="{% url 'index' %}">Skillbox Market</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
+                    class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'index' %}">
+                            Главная
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'products:catalog' %}">
+                            Каталог
+                        </a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Категории</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            {% for category in categories %}
+                                {% if category.parent %}
+                                    <li class="dropdown-item dropdown-submenu">
+                                        <a class="dropdown-toggle"
+                                           href="{% url 'products:catalog' %}?category={{ category.id }}">
+                                            {{ category.title }}
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        {% with category.category_set.all as subcategories %}
+                                            {% if subcategories %}
+                                                <a class="dropdown-item"
+                                                   href="{% url 'products:catalog' %}?category={{ category.id }}">
+                                                    {{ category.title }} <i class="bi bi-chevron-right "></i>
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-submenu">
+                                                    {% for child in subcategories %}
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                               href="{% url 'products:catalog' %}?category={{ child.id }}">
+                                                                {{ child.title }}
+                                                            </a>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% else %}
+                                                <a class="dropdown-item"
+                                                   href="{% url 'products:catalog' %}?category={{ category.id }}">
+                                                    {{ category.title }}
+                                                </a>
+                                            {% endif %}
+                                        {% endwith %}
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+                <div class="d-flex gap-2">
+                    {% if not user.is_authenticated %}
+                        <a href="{% url 'users:login' %}" class="btn btn-outline-dark">
+                            <i class="bi bi-box-arrow-in-right"></i>
+                        </a>
+                    {% endif %}
+                    <a href="{% url 'products:comparison' %}" class="btn btn-outline-dark">
+                        <i class="bi bi-arrow-left-right"></i>
+                    </a>
+                    {% if user.is_authenticated %}
+                        <div class="dropdown">
+                            <button class="btn btn-outline-dark dropdown-toggle" type="button"
+                                    data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'users:profile' %}">
+                                        Личный кабинет
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'users:logout' %}">
+                                        Выйти
+                                    </a>
+                                </li>
+                                {% if user.is_staff %}
+                                    <li>
+                                        <a class="dropdown-item" href="{% url 'admin:index' %}">
+                                            Административный раздел
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                    <a href="{% url 'orders:cart' %}" class="btn btn-outline-dark">
+                        <i class="bi-cart-fill me-1"></i>
+                        Корзина
+                        {% if cart %}
+                            <span class="badge bg-dark text-light ms-1 rounded-pill">{{ cart|length }}</span>
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+
+{% block body %}
+    <!-- Header -->
+    <header class="bg-dark py-5">
+        <div class="container position-relative">
+            <div class="row justify-content-center text-center text-white">
+                <div class="col-xl-6">
+                    <h1 class="display-4 fw-bolder">Skillbox Market</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Найди то, что тебе по душе</p>
+                    <form method="get" action="{% url 'products:catalog' %}">
+                        <div class="row">
+                            <div class="col">
+                                <div class="input-group mb-3 mt-3">
+                                    <input type="text" name="title" class="form-control form-control-lg"
+                                           placeholder="Искать товары">
+                                    <button class="btn btn-outline-secondary" type="submit">Найти</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Section -->
+    <section>
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-3 row-cols-xl-3 justify-content-center">
+                {% for category in preferred_categories %}
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <h5 class="fw-bolder">{{ category.title }}</h5>
+                                    <p class="card-text">
+                                        {{ category.description }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center">
+                                    <a class="btn btn-outline-dark mt-auto"
+                                       href="{% url 'products:catalog' %}?category={{ category.id }}">
+                                        от {{ category.lowest_price|floatformat:"0" }} ₽
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+
+            <div class="row mb-5">
+                <div class="col">
+                    <p class="h3">Популярные товары</p>
+                </div>
+            </div>
+            <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                {% for popular_product in popular_products %}
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Compare badge-->
+                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">
+                                <a href="{% url 'products:add_to_comparison' popular_product.pk %}"
+                                   style="text-decoration: none;"
+                                   class="text-white">
+                                    <i class="bi bi-arrow-left-right"></i>
+                                </a>
+                            </div>
+                            <!-- Sale badge-->
+                            {% if popular_product.product_item.price_with_discount is not None %}
+                                <div class="badge bg-dark text-white position-absolute"
+                                     style="top: 0.5rem; right: 3.0rem">
+                                    Sale
+                                </div>
+                            {% endif %}
+                            <!-- Product image-->
+                            <a href="{% url 'products:product' pk=popular_product.pk %}">
+                                {% if popular_product.preview %}
+                                    <img class="card-img-top" src="{{ popular_product.preview }}"
+                                         alt="{{ popular_product.title }}"/>
+                                {% else %}
+                                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                                         alt="Product default"/>
+                                {% endif %}
+                            </a>
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">
+                                        <a href="{% url 'products:product' pk=popular_product.pk %}" class="text-black"
+                                           style="text-decoration: none;">
+                                            {{ popular_product.title }}
+                                        </a>
+                                    </h5>
+                                    <!-- Product reviews-->
+                                    {% if popular_product.get_rating %}
+                                        <div class="d-flex justify-content-center small text-warning mb-2">
+                                            {% with full_stars=popular_product.get_rating %}
+                                                {% for i in "12345"|make_list %}
+                                                    {% if forloop.counter <= full_stars %}
+                                                        <div class="bi-star-fill"></div>
+                                                    {% else %}
+                                                        <div class="bi-star"></div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endwith %}
+                                        </div>
+                                    {% endif %}
+                                    <!-- Product price-->
+                                    <a href="{% url 'products:product' pk=popular_product.pk %}" class="text-black"
+                                       style="text-decoration: none;">
+                                        {% if popular_product.product_item.price_with_discount is not None %}
+                                            <span class="text-muted text-decoration-line-through">
+                                                {{ popular_product.product_item.price|floatformat:"0" }} ₽</span>
+                                            {{ popular_product.product_item.price_with_discount }} ₽
+                                        {% else %}
+                                            {{ popular_product.product_item.price|floatformat:"0" }} ₽
+                                        {% endif %}
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                {% if popular_product.get_total_quantity == 0 %}
+                                    <div class="text-center">
+                                        <a class="btn btn-outline-dark mt-auto disabled-link"
+                                           href="{% url 'orders:cart_add' product_item_id=popular_product.product_item.pk %}">
+                                            Нет в наличии
+                                        </a>
+                                    </div>
+                                {% else %}
+                                    <div class="text-center">
+                                        <a class="btn btn-outline-dark mt-auto"
+                                           href="{% url 'orders:cart_add' product_item_id=popular_product.product_item.pk %}">
+                                            Добавить в корзину
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            {% if daily_special_product %}
+                <div class="row mb-5">
+                    <div class="col">
+                        <p class="h3">Предложение дня</p>
+                    </div>
+                </div>
+                <div class="row row-cols-1 mb-5">
+                    <div class="col-lg-8">
+                        <div class="card mb-3">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    {% if daily_special_product.preview %}
+                                        <a href="{% url 'products:product' pk=daily_special_product.pk %}">
+                                            <img src="{{ daily_special_product.preview }}"
+                                                 class="img-fluid rounded-start"
+                                                 alt="{{ daily_special_product.title }}">
+                                        </a>
+                                    {% else %}
+                                        <a href="products/product.html">
+                                            <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                                                 class="img-fluid rounded-start"
+                                                 alt="Product default">
+                                        </a>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <!-- Compare badge-->
+                                        <div class="badge bg-dark text-white position-absolute"
+                                             style="top: 0.5rem; right: 0.5rem">
+                                            <a
+                                                    href="{% url 'products:add_to_comparison' product_id=daily_special_product.id %}"
+                                                    style="text-decoration: none;"
+                                                    class="text-white">
+                                                <i class="bi bi-arrow-left-right"></i>
+                                            </a>
+                                        </div>
+                                        <!-- Sale badge-->
+                                        {% if daily_special_product.product_item.price_with_discount is not None %}
+                                            <div class="badge bg-warning text-black position-absolute"
+                                                 style="top: 0.5rem; right: 3.0rem">
+                                                Sale
+                                            </div>
+                                        {% endif %}
+                                        <h5 class="card-title">
+                                            <a href="{% url 'products:product' pk=daily_special_product.pk %}"
+                                               class="text-black"
+                                               style="text-decoration: none;">
+                                                {{ daily_special_product.title }}
+                                            </a>
+                                        </h5>
+                                        <!-- Product reviews-->
+                                        {% if daily_special_product.get_rating %}
+                                            <div class="d-flex small text-warning mb-2">
+                                                {% with full_stars=daily_special_product.get_rating %}
+                                                    {% for i in "12345"|make_list %}
+                                                        {% if forloop.counter <= full_stars %}
+                                                            <div class="bi-star-fill"></div>
+                                                        {% else %}
+                                                            <div class="bi-star"></div>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endwith %}
+                                            </div>
+                                        {% endif %}
+                                        <!-- Product price-->
+                                        <a href="products/product.html" class="text-black"
+                                           style="text-decoration: none;">
+                                            <span class="text-muted text-decoration-line-through">
+                                                {{ daily_special_product.product_item.price }} ₽
+                                            </span>
+                                            {{ daily_special_product_price }} ₽
+                                        </a>
+                                        {% if daily_special_product.get_total_quantity == 0 %}
+                                            <div class="pt-4" style="bottom: 0.5rem;">
+                                                <a class="btn btn-outline-dark mt-auto disabled-link"
+                                                   href="#">
+                                                    Нет в наличии
+                                                </a>
+                                            </div>
+                                        {% else %}
+                                            <div class="pt-4" style="bottom: 0.5rem;">
+                                                <a class="btn btn-outline-dark mt-auto"
+                                                   href="{% url 'orders:cart_add' product_item_id=daily_special_product.product_item.id %}">
+                                                    Добавить в корзину
+                                                </a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 text-center align-self-center">
+                        <h1 id="timer" class="display-5"></h1>
+                        <p>до конца акции</p>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="row mb-5">
+                <div class="col">
+                    <p class="h3">Ограниченный тираж</p>
+                </div>
+            </div>
+            <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                {% for limited_product in limited_products %}
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Compare badge-->
+                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">
+                                <a href="{% url 'products:add_to_comparison' limited_product.pk %}"
+                                   style="text-decoration: none;"
+                                   class="text-white">
+                                    <i class="bi bi-arrow-left-right"></i>
+                                </a>
+                            </div>
+                            <!-- Sale badge-->
+                            {% if limited_product.product_item.price_with_discount is not None %}
+                                <div class="badge bg-dark text-white position-absolute"
+                                     style="top: 0.5rem; right: 3.0rem">
+                                    Sale
+                                </div>
+                            {% endif %}
+                            <!-- Product image-->
+                            <a href="{% url 'products:product' pk=limited_product.pk %}">
+                                {% if popular_product.preview %}
+                                    <img class="card-img-top" src="{{ limited_product.preview }}"
+                                         alt="{{ limited_product.title }}"/>
+                                {% else %}
+                                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                                         alt="Prodyct image"/>
+                                {% endif %}
+                            </a>
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">
+                                        <a href="{% url 'products:product' pk=limited_product.pk %}" class="text-black"
+                                           style="text-decoration: none;">
+                                            {{ limited_product.title }}
+                                        </a>
+                                    </h5>
+                                    <!-- Product reviews-->
+                                    {% if popular_product.get_rating %}
+                                        <div class="d-flex justify-content-center small text-warning mb-2">
+                                            {% with full_stars=popular_product.get_rating %}
+                                                {% for i in "12345"|make_list %}
+                                                    {% if forloop.counter <= full_stars %}
+                                                        <div class="bi-star-fill"></div>
+                                                    {% else %}
+                                                        <div class="bi-star"></div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endwith %}
+                                        </div>
+                                    {% endif %}
+                                    <!-- Product price-->
+                                    <a href="{% url 'products:product' pk=limited_product.pk %}" class="text-black"
+                                       style="text-decoration: none;">
+                                        {% if limited_product.product_item.price_with_discount is not None %}
+                                            <span class="text-muted text-decoration-line-through">
+                                                {{ limited_product.product_item.price|floatformat:"0" }} ₽</span>
+                                            {{ limited_product.product_item.price_with_discount }} ₽
+                                        {% else %}
+                                            {{ limited_product.product_item.price|floatformat:"0" }} ₽
+                                        {% endif %}
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                {% if limited_product.get_total_quantity == 0 %}
+                                    <div class="text-center">
+                                        <a class="btn btn-outline-dark mt-auto disabled-link"
+                                           href="{% url 'orders:cart_add' product_item_id=limited_product.product_item.pk %}">
+                                            Нет в наличии
+                                        </a>
+                                    </div>
+                                {% else %}
+                                    <div class="text-center">
+                                        <a class="btn btn-outline-dark mt-auto"
+                                           href="{% url 'orders:cart_add' product_item_id=limited_product.product_item.pk %}">
+                                            Добавить в корзину
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block script %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let endTime = new Date("{{ daily_special_timer|date:'Y-m-d H:i:s' }}").getTime(); // Время окончания в UTC
+            let timer = setInterval(function () {
+                let now = Date.now(); // Текущее время в UTC
+                let distance = endTime - now;
+
+                // Если время истекло, установить distance в 0
+                if (distance < 0) {
+                    distance = 0;
+                }
+
+                // Расчет дней, часов, минут и секунд
+                let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Формирование строки таймера
+                let timerString = "";
+                if (days > 0) {
+                    timerString += days + "д ";
+                }
+                if (hours > 0 || days > 0) {
+                    timerString += hours + "ч ";
+                }
+                timerString += minutes + "м " + seconds + "с";
+
+                // Вывод таймера на страницу
+                document.getElementById("timer").innerHTML = timerString;
+
+                // Если время истекло, останавливаем таймер
+                if (distance === 0) {
+                    clearInterval(timer);
+                }
+            }, 1000);
+        });
+    </script>
+{% endblock %}

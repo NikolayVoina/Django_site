@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}
+    Сравнение - Skillbox Market
+{% endblock %}
+
+{% block body %}
+    {% if not comparison or comparison|length < 2 %}
+        <div class="row row-cols-1 text-center">
+            <div class="col">
+                <p class="h4">Недостаточно данных для сравнения</p>
+                <a href="{% url 'products:catalog' %}" class="text-secondary">&larr; Каталог товаров</a>
+            </div>
+        </div>
+    {% else %}
+        {% if not comparison.comparison.differing_characteristics %}
+            <div class="row row-cols-1 text-center">
+                <div class="col">
+                    <p class="h5">Нет различающихся характеристик добавленных товаров</p>
+                </div>
+            </div>
+        {% endif %}
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="row row-cols-1 row-cols-md-3 gx-4 gx-lg-5 gy-5 mt-3 justify-content-center">
+                <!-- Product info -->
+                {% for key, val in comparison.comparison.items %}
+                    {% if key != "differing_characteristics" %}
+                        <div class="col">
+                            <div class="card h-100">
+                                <a href="{% url 'products:product' val.pk %}">
+                                    {% if val.preview %}
+                                        <img src="{{ val.preview }}" class="card-img-top" alt="...">
+                                    {% else %}
+                                        <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                                             class="card-img-top" alt="...">
+                                    {% endif %}
+                                </a>
+                                <div class="card-body">
+                                    <a href="{% url 'products:product' val.pk %}"
+                                       style="text-decoration: none;" class="text-dark">
+                                        <h5 class="card-title">{{ val.title }}</h5>
+                                    </a>
+                                    <!-- Category display -->
+                                    {% if val.category %}
+                                        <div class="row row-cols-2">
+                                            <div class="col">
+                                                <p><strong>Категория</strong></p>
+                                            </div>
+                                            <div class="col">{{ val.category }}</div>
+                                        </div>
+                                    {% endif %}
+                                    <!-- Characteristics -->
+                                    {% for k, v in val.characteristics.items %}
+                                        {% if k in comparison.comparison.differing_characteristics %}
+                                            <div class="row row-cols-2 bg-info mb-1">
+                                                <div class="col"><p><strong>{{ k }}</strong></p></div>
+                                                {% if v.copy %}
+                                                    <div class="col">
+                                                        <p>
+                                                            {% for i in v %}
+                                                                {{ i }}<br>
+                                                            {% endfor %}
+                                                        </p>
+                                                    </div>
+                                                {% else %}
+                                                    <div class="col"><p>{{ v }}</p></div>
+                                                {% endif %}
+                                            </div>
+                                        {% else %}
+                                            <div class="row row-cols-2 mb-1">
+                                                <div class="col"><p><strong>{{ k }}</strong></p></div>
+                                                {% if v.copy %}
+                                                    <div class="col">
+                                                        <p>
+                                                            {% for i in v %}
+                                                                {{ i }}<br>
+                                                            {% endfor %}
+                                                        </p>
+                                                    </div>
+                                                {% else %}
+                                                    <div class="col"><p>{{ v }}</p></div>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <!-- Price -->
+                                    <div class="row row-cols-2 mb-1">
+                                        <div class="col"><p><strong>Цена</strong></p></div>
+                                        <div class="col"><p>{{ val.price | floatformat:"-2" }} ₽</p></div>
+                                    </div>
+                                    <!-- Remove item -->
+                                    <div class="row row-cols-2 justify-content-center">
+                                        <div class="col text-center">
+                                            <a href="{% url 'products:remove_from_comparison' val.pk %}"
+                                               class="small text-secondary">
+                                                убрать из сравнения
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+    {% endif %}
+{% endblock %}

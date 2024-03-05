@@ -1,0 +1,71 @@
+{% extends "users/base-users.html" %}
+{% load i18n %}
+{% load allauth account socialaccount %}
+{% load static %}
+{% block title %}
+    Авторизация
+{% endblock title %}
+{% block users %}
+    <!-- Login section -->
+    {% if form.non_field_errors %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ form.non_field_errors.as_text | cut:"*" }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    <div class="card shadow-lg border-0 rounded-lg mt-5">
+        <div class="card-header"><h3 class="text-center font-weight-light my-4">Авторизация</h3></div>
+        <div class="card-body">
+            {% url 'users:login' as login_url %}
+            {% element form form=form method="post" action=login_url tags="entrance,login" %}
+                {% slot body %}
+                    {% csrf_token %}
+                    <div class="form-floating mb-3">
+                        {{ form.login }}
+                        <label for="inputEmail">Адрес электронной почты</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        {{ form.password }}
+                        <label for="inputPassword">Пароль</label>
+                    </div>
+                {% endslot %}
+                {% slot actions %}
+                    <div class="d-flex align-items-center justify-content-between mt-4 mb-5">
+                        {{ form.password.help_text }}
+                        <button type="submit" class="btn btn-outline-dark">Войти</button>
+                    </div>
+                {% endslot %}
+            {% endelement %}
+            <div class="text-center mb-3">
+                <hr>
+                <p class="small">или</p>
+            </div>
+            <div class="text-center">
+                <div class="row row-cols-3">
+                    <div class="col">
+                        <a href="{% provider_login_url 'google' %}" style="color: #ea4336;">
+                            <i class="fs-1 bi bi-google"></i>
+                        </a>
+                    </div>
+                    <div class="col">
+                        <a href="{% provider_login_url 'github' %}" style="color: #1f2329;">
+                            <i class="fs-1 bi bi-github"></i>
+                        </a>
+                    </div>
+                    <div class="col">
+                        <a href="{% provider_login_url 'vk' %}">
+                            <img src="{% static 'assets/vk-icon.svg' %}" alt="VK">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-center py-3">
+            <div class="small">
+                <a class="link-dark" href="{% url 'users:signup' %}" style="text-decoration: None;">
+                    Еще нет аккаунта? Зарегистрируйся!
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock users %}

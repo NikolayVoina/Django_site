@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ product.title }} - Skillbox Market
+{% endblock %}
+
+{% block body %}
+    <!-- Product section-->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="row gx-4 gx-lg-5 align-items-center">
+                <div class="col-md-6">
+                    {% if product.main_image %}
+                        <img class="card-img-top mb-5 mb-md-0"
+                             src="{{ product.main_image }}" alt="{{ product.title }}"/>
+                    {% else %}
+                        <img class="card-img-top mb-5 mb-md-0"
+                             src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="Example image"/>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <div class="small mb-1">{{ product.category.title }}</div>
+                    <h1 class="display-5 fw-bolder">{{ product.title }}</h1>
+                    <div class="fs-5 mb-5">
+                        {% if product.product_item.price_with_discount is not None %}
+                            <span class="text-muted text-decoration-line-through">
+                                {{ product.product_item.price|floatformat:"0" }} ₽</span>
+                            {{ product.product_item.price_with_discount }} ₽
+                        {% else %}
+                            <span>{{ product.product_item.price|floatformat:"0" }} ₽</span>
+                        {% endif %}
+                    </div>
+                    <p class="lead">
+                        {{ product.description }}
+                    </p>
+                    <div class="d-flex mb-3">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-outline-dark flex-shrink-0" data-bs-toggle="modal"
+                                data-bs-target="#productInfo">
+                            Подробнее
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="productInfo" tabindex="-1" aria-labelledby="productInfoLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="productInfoLabel">Подробнее</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="h6">Характеристики</p>
+                                        <table class="table table-borderless">
+                                            <tbody>
+                                            {% for key, value in product.characteristics.items %}
+                                                <tr>
+                                                    <td>{{ key }}</td>
+                                                    <td>{{ value }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">
+                                            Закрыть
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex mb-3">
+                        {% if product.get_total_quantity == 0 %}
+                            <a href="#"
+                               class="btn btn-outline-dark flex-shrink-0 disabled-link">
+                                <i class="bi-cart-fill me-1"></i>
+                                Нет в наличии
+                            </a>
+                        {% else %}
+                            <a href="{% url 'orders:cart_add' product_item_id=product.product_item.pk %}"
+                               class="btn btn-outline-dark flex-shrink-0">
+                                <i class="bi-cart-fill me-1"></i>
+                                Добавить в корзину
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="d-flex">
+                        <p class="small">
+                            <a href="{% url 'products:add_to_comparison' product.pk %}"
+                               style="text-decoration: none;" class="text-dark">
+                                Добавить к сравнению
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                {% if product.thumbnails %}
+                    <div class="col-md-6 pt-lg-5">
+                        <div class="row gy-3 row-cols-md-3">
+                            {% for thumbnail in product.thumbnails %}
+                                <img src="{{ thumbnail }}" class="rounded float-start">
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    <!-- Sellers section-->
+    <section class="py-5 bg-light">
+        <div class="container px-4 px-lg-5 mt-5">
+            <h2 class="fw-bolder mb-4">Продавцы</h2>
+            <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-3">
+                {% for product_item in product.items.all %}
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <h5 class="card-header">{{ product_item.seller.title }}</h5>
+                            <div class="card-body">
+                                <p>
+                                    <i class="bi bi-truck"></i>
+                                    Курьером, 8 сентября, от 0 ₽
+                                </p>
+                                <p>
+                                    <i class="bi bi-geo-alt"></i>
+                                    Самовывоз, 5 сентября
+                                </p>
+                                <p class="card-text">
+                                    {% if product_item.price_with_discount is not None %}
+                                        <span class="text-muted text-decoration-line-through">
+                                            {{ product_item.price|floatformat:"0" }} ₽
+                                        </span>
+                                        {{ product_item.price_with_discount }} ₽
+                                    {% else %}
+                                        {{ product_item.price|floatformat:"0" }} ₽
+                                    {% endif %}
+                                </p>
+                                <a href="{% url 'orders:cart_add' product_item_id=product_item.pk %}"
+                                   class="btn btn-outline-dark flex-shrink-0">
+                                    <i class="bi-cart-fill me-1"></i>
+                                    Добавить в корзину
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!-- Display reviews -->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <h2 class="fw-bolder mb-4">Отзывы</h2>
+
+            {% if reviews %}
+                <div class="row gx-4 gx-lg-5 row-cols-1">
+                    {% for review in reviews %}
+                        <div class="col mb-5">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <div class="d-flex small text-warning">
+                                        {% with full_stars=review.rating %}
+                                            {% for i in "12345"|make_list %}
+                                                {% if forloop.counter <= full_stars %}
+                                                    <div class="bi-star-fill"></div>
+                                                {% else %}
+                                                    <div class="bi-star"></div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endwith %}
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <blockquote class="blockquote mb-0">
+                                        <p>{{ review.comment }}</p>
+                                        <footer class="blockquote-footer">
+                                            {{ review.user.first_name }},
+                                            <cite title="Source Title">{{ review.created_at|date:"j F Y, H:i" }}</cite>
+                                        </footer>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% if user.is_authenticated %}
+                <h4 class="fw-bolder mb-4">Добавить отзыв</h4>
+                <div class="row row-cols-1">
+                    <div class="col">
+                        <form method="post" action="{% url 'products:product' product.pk %}">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="reviewByUser" class="form-label visually-hidden">Отзыв</label>
+                                {{ review_form.comment }}
+                            </div>
+                            <div class="d-flex mb-3">
+                                <label for="reviewByUser" class="form-label visually-hidden">Рэйтинг</label>
+                                <input type="number" name="rating" min="1" max="5" placeholder="rating">
+                            </div>
+                                <button type="submit" class="btn btn-outline-dark">Отправить</button>
+                        </form>
+                    </div>
+                </div>
+            {% else %}
+
+                <blockquote class="blockquote mb-0">
+                    <p>Чтобы добавить отзыв, пожалуйста, <a href="{% url 'users:login' %}">войдите в систему</a>.
+                    </p>
+                </blockquote>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

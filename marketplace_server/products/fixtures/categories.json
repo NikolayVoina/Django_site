@@ -1,0 +1,112 @@
+[
+  {
+    "model": "products.category",
+    "pk": 3,
+    "fields": {
+      "title": "Ноутбуки и компьютеры",
+      "parent": null,
+      "description": null,
+      "is_preferred": false
+    }
+  },
+  {
+    "model": "products.category",
+    "pk": 4,
+    "fields": {
+      "title": "Бытовая техника",
+      "parent": null,
+      "description": "",
+      "is_preferred": false
+    }
+  },
+  {
+    "model": "products.category",
+    "pk": 5,
+    "fields": {
+      "title": "Холодильники",
+      "parent": 4,
+      "description": "Ознакомьтесь с нашим ассортиментом холодильников, сочетающих инновационные технологии и элегантный дизайн, чтобы сохранить свежесть ваших продуктов и гармонию в вашей кухне.",
+      "is_preferred": true
+    }
+  },
+  {
+    "model": "products.category",
+    "pk": 6,
+    "fields": {
+      "title": "Посудомоечные машины",
+      "parent": 4,
+      "description": null,
+      "is_preferred": false
+    }
+  },
+  {
+    "model": "products.category",
+    "pk": 7,
+    "fields": {
+      "title": "Морозильники",
+      "parent": 4,
+      "description": null,
+      "is_preferred": false
+    }
+  },
+  {
+    "model": "products.category",
+    "pk": 8,
+    "fields": {
+      "title": "Одежда",
+      "parent": null,
+      "description": null,
+      "is_preferred": false
+    }
+  },
+  {
+    "model": "products.category",
+    "pk": 9,
+    "fields": {
+      "title": "Обувь",
+      "parent": null,
+      "description": "Откройте для себя мир стиля и комфорта с нашей эксклюзивной коллекцией обуви, подходящей для каждого повода и настроения.",
+      "is_preferred": true
+    }
+  },
+  {
+    "model": "products.category",
+    "pk": 10,
+    "fields": {
+      "title": "Строительство и ремонт",
+      "parent": null,
+      "description": null,
+      "is_preferred": false
+    }
+  },
+  {
+    "model": "products.category",
+    "pk": 11,
+    "fields": {
+      "title": "Электроинструменты",
+      "parent": 10,
+      "description": null,
+      "is_preferred": false
+    }
+  },
+  {
+    "model": "products.category",
+    "pk": 12,
+    "fields": {
+      "title": "Ванны",
+      "parent": 10,
+      "description": "Исследуйте нашу коллекцию ванн, где комфорт встречается с элегантностью, чтобы превратить вашу ванную комнату в оазис релаксации и стиля.",
+      "is_preferred": true
+    }
+  },
+  {
+    "model": "products.category",
+    "pk": 13,
+    "fields": {
+      "title": "Фильтры для воды и комплектующие",
+      "parent": 10,
+      "description": null,
+      "is_preferred": false
+    }
+  }
+]

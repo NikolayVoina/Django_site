@@ -1,0 +1,56 @@
+{% extends "users/base-users.html" %}
+{% load allauth i18n socialaccount %}
+{% block title %}
+    Регистрация
+{% endblock title %}
+{% block users %}
+    <div class="card shadow-lg border-0 rounded-lg mt-5">
+        <div class="card-header"><h3 class="text-center font-weight-light my-4">Регистрация</h3></div>
+        <div class="card-body">
+            {% url 'users:signup' as action_url %}
+            {% element form form=form method="post" action=action_url tags="entrance,signup" %}
+                {% slot body %}
+                    {% csrf_token %}
+                    <div class="form-floating mb-3">
+                        {{ form.first_name }}
+                        <label for="inputName">Имя</label>
+                        <div id="validationServerName" class="invalid-feedback">
+                            {{ form.first_name.errors }}
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        {{ form.email }}
+                        <label for="inputEmail">Адрес электронной почты</label>
+                        <div id="validationServerEmail" class="invalid-feedback">
+                            {{ form.email.errors }}
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        {{ form.password1 }}
+                        <label for="inputPassword">Пароль</label>
+                        <div id="validationServerPassword" class="invalid-feedback">
+                            {{ form.password1.errors }}
+                        </div>
+                    </div>
+                    {% if redirect_field_value %}
+                        <input type="hidden"
+                               name="{{ redirect_field_name }}"
+                               value="{{ redirect_field_value }}" />
+                    {% endif %}
+                {% endslot %}
+                {% slot actions %}
+                    <div class="d-flex align-items-center mt-4 mb-4">
+                        <button type="submit" class="btn btn-outline-dark">Создать аккаунт</button>
+                    </div>
+                {% endslot %}
+            {% endelement %}
+        </div>
+        <div class="card-footer text-center py-3">
+            <div class="small">
+                <a class="link-dark" href="{% url 'users:login' %}" style="text-decoration: None;">
+                    Уже есть аккаунт? Войти!
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock users %}

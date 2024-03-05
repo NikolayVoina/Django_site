@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}
+    Корзина - Skillbox Market
+{% endblock %}
+
+{% block body %}
+    <section>
+        <div class="container py-5 px-4 px-lg-5">
+            {% if not cart %}
+                <!--  Если никакие товары не были добавлены в корзину  -->
+                <div class="text-center">
+                    <div class="error mx-auto display-1" data-text="404">Пусто</div>
+                    <p class="lead text-gray-800 mb-5">Вы пока что не добавили никаких товаров в корзину</p>
+                    <a href=" {% url 'products:catalog' %}" class="text-secondary">&larr; за покупками</a>
+                </div>
+            {% else %}
+                {% for product_item in cart %}
+                    <!-- Product info -->
+                    <div class="row mb-5">
+                        <div class="col-12 col-md-2 mb-3">
+                            <a href="{% url 'products:product' pk=product_item.product_id %}">
+                                {% if product_item.image %}
+                                    <img src="{{ product_item.image }}"
+                                         class="img-fluid"
+                                         alt="{{ product_item.title }}">
+                                {% else %}
+                                    <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                                         class="img-fluid"
+                                         alt="{{ product_item.title }}">
+                                {% endif %}
+                            </a>
+                        </div>
+                        <div class="col-12 col-md-5">
+                            <a href="{% url 'products:product' pk=product_item.pk %}" class="text-dark"
+                               style="text-decoration: none;"
+                            >
+                                <p class="h5">{{ product_item.title }}</p>
+                            </a>
+                            <p>{{ product_item.description }}</p>
+                        </div>
+                        <div class="col-6 col-md-1">
+                            <input class="form-control text-center me-3" type="num"
+                                   value="{{ product_item.quantity }}"
+                                   style="max-width: 3rem"/>
+                        </div>
+                        <div class="col-3 col-md-3 text-center">
+                            {% if product_item.price_with_discount is not None %}
+                                <span class="text-muted text-decoration-line-through">
+                                    {{ product_item.total_item_price|floatformat:"0" }} ₽</span>
+                                <p class="h6">{{ product_item.total_item_discount_price }} ₽</p>
+                            {% else %}
+                                <p class="h6">{{ product_item.total_item_price|floatformat:"0" }} ₽</p>
+                            {% endif %}
+                        </div>
+                        <div class="col-3 col-md-1">
+                            <a href="{% url 'orders:cart_remove' product_item_id=product_item.pk %}"
+                               class="text-secondary">
+                                <i class="bi bi-trash-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="d-flex flex-row-reverse">
+                    <div>
+                        <a href="{% url 'orders:checkout' %}" class="btn btn-outline-dark">
+                            Оформить заказ
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

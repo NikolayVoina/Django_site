@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}
+    Заказ № {{ order.pk }} - Skillbox Market
+{% endblock %}
+{% block body %}
+    <section>
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="row gx-4 gx-lg-5">
+                <div class="col-12 col-md-6">
+                    <p class="h2 mb-3">Заказ № {{ order.pk }}</p>
+                    {% if order.status != order.COMPLETED %}
+                        <p class="h5 mb-3 mb-md-5 text-secondary"><strong>{{ order.get_status_display }}</strong></p>
+                    {% else %}
+                        <p class="h5 mb-5 text-success"><strong>{{ order.get_status_display }}</strong></p>
+                    {% endif %}
+                </div>
+                <div class="col-12 col-md-6">
+                    {% if messages %}
+                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            {% for message in messages %}
+                                {% if forloop.last %}
+                                    {{ message|safe }}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-12 col-md-6 mb-3">
+                    <p><small>Детали заказа</small></p>
+                    <p>{{ order.delivery_info.first_name }} {{ order.delivery_info.last_name }}</p>
+                    <p>{{ order.delivery_info.phone_number }}</p>
+                    <p>{{ order.delivery_info.email }}</p>
+                    <p>{{ order.created_at }}</p>
+                </div>
+                <div class="col-12 col-md-6 mb-3">
+                    <p><small>Адрес доставки</small></p>
+                    <p>{{ order.delivery_info.city }}</p>
+                    <p>{{ order.delivery_info.address }}, {{ order.delivery_info.post_code }}</p>
+                    <p><i class="bi bi-truck"></i> Курьером</p>
+                    <!-- Если выбран самовывоз: -->
+                    <!-- <p><i class="bi bi-geo-alt"></i> Самовывоз</p>-->
+                    <p>
+                        {% if order.payment_method == order.BY_CASH %}
+                            <i class="fs-3 bi bi-wallet2"></i>
+                        {% elif order.payment_method == order.BY_CARD %}
+                            <i class="fs-3 bi bi-credit-card-fill"></i>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Название</th>
+                            <th scope="col">Количество</th>
+                            <th scope="col">Цена</th>
+                            <th scope="col">Сумма</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for product_item in order.product_items %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'products:product' pk=product_item.product_item.product.pk %}"
+                                       class="text-dark">
+                                        {{ product_item.product_item.product.title }}
+                                    </a>
+                                </td>
+                                <td>{{ product_item.quantity }}</td>
+                                <td>{{ product_item.price }} ₽</td>
+                                <td>{{ product_item.total_price }} ₽</td>
+                            </tr>
+                        {% endfor %}
+                        <tr>
+                            <td colspan="3">Итого</td>
+                            <td><strong>{{ order.total_price }} ₽</strong></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

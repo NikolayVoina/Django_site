@@ -1,0 +1,34 @@
+[
+  {
+    "model": "products.seller",
+    "pk": 2,
+    "fields": {
+      "title": "М.Видео",
+      "user": 7
+    }
+  },
+  {
+    "model": "products.seller",
+    "pk": 3,
+    "fields": {
+      "title": "Эльдорадо",
+      "user": 8
+    }
+  },
+  {
+    "model": "products.seller",
+    "pk": 4,
+    "fields": {
+      "title": "СитиЛинк",
+      "user": 9
+    }
+  },
+  {
+    "model": "products.seller",
+    "pk": 5,
+    "fields": {
+      "title": "Фиксик",
+      "user": 10
+    }
+  }
+]

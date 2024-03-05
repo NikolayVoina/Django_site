@@ -1,0 +1,42 @@
+{% load static %}
+{% load allauth account %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Подтверждение аккаунта - Skillbox Market</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico' %}"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet"/>
+</head>
+<body>
+<!-- Reset Password Email section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <p>
+                    Для подтверждение учетной записи <i>{{ user.email }}</i> на сайте
+                    <b><a class="text-dark" href="{% url 'index' %}" style="text-decoration: none;">Skillbox Market</a></b>,
+                    пожалуйста, перейдите по ссылке ниже.
+                </p>
+                <p>
+                    <a href="{{ activate_url }}">Подтвердить учетную запись</a>
+                </p>
+                <p>
+                    Если вы не регистрировались на сайте, то просто проигнорируйте это письмо.
+                </p>
+                <p class="fst-italic">
+                    С уважением, Skillbox Market
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

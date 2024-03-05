@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load users_extras %}
+{% load static %}
+{% block title %}
+    Личный кабинет - Skillbox Market
+{% endblock %}
+{% block body %}
+    <!-- Profile section-->
+    <section>
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-7 mb-5">
+                    <div class="row justify-content-center">
+                        <div class="col-5 col-md-4 col-lg-3">
+                            <div class="mb-4">
+                                {% if user.avatar %}
+                                    <img src="{{ user.avatar.url }}" class="img-fluid rounded" alt="...">
+                                {% else %}
+                                    <img src="{% static 'images/default-avatar.png' %}" class="img-fluid rounded" alt="...">
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <form enctype="multipart/form-data" method="post" action="">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="userImage" class="form-label visually-hidden"></label>
+                            {{ form.avatar }}
+                            <div id="validationServerAvatar" class="invalid-feedback">
+                                {{ form.avatar.errors }}
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="userEmail">Эл. почта</span>
+                            <input type="email" class="form-control" aria-label="userEmail"
+                                   value={{ user.email }} readonly>
+                        </div>
+                        <div class="input-group mb-4">
+                            <span class="input-group-text">Имя и фамилия</span>
+                            {{ form.first_name }}
+                            {{ form.last_name }}
+                        </div>
+                        {% for message in messages %}
+                            {% if message.tags == 'email_resent info' %}
+                                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                    Повторное письмо выслано на адрес <strong>{{ user.email }}</strong>.
+                                    Пожалуйста, проверьте почту и подтвердите вашу учетную запись.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if not user.is_email_verified %}
+                            <div class="alert alert-warning" role="alert">
+                                Адрес электронной почты не подтвержден.
+                                <small>
+                                    <a href="{% url 'users:resend_email_verification' %}"
+                                       style="text-decoration: none;">
+                                        Выслать письмо повторно.
+                                    </a>
+                                </small>
+                            </div>
+                        {% endif %}
+                        <hr>
+                        <p><small>Детали доставки</small></p>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Город</span>
+                            {{ form.city }}
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Адрес</span>
+                            {{ form.address }}
+                        </div>
+                        <div class="input-group mb-4">
+                            <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
+                            {{ form.phone_number }}
+                            <div id="validationServerPhone" class="invalid-feedback">
+                                {{ form.phone_number.errors }}
+                            </div>
+                        </div>
+                        {% if messages %}
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                {% for message in messages %}
+                                    {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS and forloop.last %}
+                                        {{ message }}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <hr>
+                        <div>
+                            <button type="submit" class="btn btn-outline-dark">Сохранить</button>
+                        </div>
+                    </form>
+                </div>
+                {% if view_history or orders %}
+                    <div class="col-md-5">
+                        {% if orders %}
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Заказ {{ orders.first.pk }}</h5>
+                                    <h6 class="card-subtitle mb-4 text-body-secondary">{{ orders.first.created_at | date }}</h6>
+                                    {% if orders.first.status != orders.first.COMPLETED %}
+                                        <p class="card-text text-secondary">
+                                            <strong>{{ orders.first.get_status_display }}</strong></p>
+                                    {% else %}
+                                        <p class="card-text text-success">
+                                            <strong>{{ orders.first.get_status_display }}</strong></p>
+                                    {% endif %}
+                                    <p class="card-text"><strong>{{ orders.first.total_price }} ₽</strong></p>
+                                    <a href="{% url 'orders:detail' orders.first.pk %}" class="card-link text-dark">Подробнее</a>
+                                </div>
+                            </div>
+                            {% if orders.count > 1 %}
+                                <div class="card mb-5">
+                                    <div class="card-header">
+                                        Предыдущие заказы
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                    {% for order in orders %}
+                                        {% if order != orders.first %}
+                                            <li class="list-group-item
+                                                {% if order.status == order.PAID %}
+                                                    list-group-item-primary
+                                                {% elif order.status == order.IN_TRANSIT %}
+                                                    list-group-item-warning
+                                                {% elif order.status == order.COMPLETED %}
+                                                    list-group-item-success
+                                                {% endif %}">
+                                                <strong>
+                                                    <a href="{% url 'orders:detail' order.pk %}" class="text-dark"
+                                                       style="text-decoration: none;">
+                                                        № {{ order.pk }} от {{ order.created_at | date }}</a>
+                                                </strong>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                        {% if view_history %}
+                            <div class="row">
+                                <p class="h4">История просмотров</p>
+                            </div>
+                            <div class="row row-cols-1 row-cols-md-2 mt-3">
+                                {% for view in view_history|slice:":2" %}
+                                    <div class="col mb-3">
+                                        <div class="card h-100">
+                                            <!-- Product image-->
+                                            <a href="{% url 'products:product' pk=view.product.pk %}">
+                                                <img class="card-img-top"
+                                                     src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                                                     alt="..."/>
+                                            </a>
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <!-- Product name-->
+                                                    <a class="text-dark"
+                                                       href="{% url 'products:product' pk=view.product.pk %}"
+                                                       style="text-decoration: none;">
+                                                        {{ view.product.title }}
+                                                    </a>
+                                                </h5>
+                                                <p class="card-text">
+                                                    {{ view.product.product_item.price|floatformat:"0" }} ₽
+                                                </p>
+                                            </div>
+                                            <div class="card-footer text-secondary">
+                                                {{ view.updated| humanize_date }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="row row-cols-1 mt-3">
+                                <div class="col">
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-sm btn-dark w-100" data-bs-toggle="modal"
+                                            data-bs-target="#historyModal">
+                                        Подробнее
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="historyModal" tabindex="-1"
+                                         aria-labelledby="historyModalLabel"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="historyModalLabel">История
+                                                        просмотров</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <table class="table table-borderless">
+                                                        <tbody>
+                                                        {% for view in view_history|slice:":20" %}
+                                                            <tr>
+                                                                <th scope="row">
+                                                                    <a href="{% url 'products:product' pk=view.product.pk %}"
+                                                                       class="text-dark">
+                                                                        {{ view.product.title }}
+                                                                    </a>
+                                                                </th>
+                                                            <td>{{ view.product.product_item.price|floatformat:"0" }} ₽</td>
+                                                                <td>{{ view.updated| humanize_date }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                        Закрыть
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block footer %}
+    <footer class="py-5 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; Skillbox Market 2023</p>
+        </div>
+    </footer>
+{% endblock %}
